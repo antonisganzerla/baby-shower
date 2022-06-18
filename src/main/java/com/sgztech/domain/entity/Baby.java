@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Entity
-@Table( name = "baby" )
+@Table(name = "baby")
 public class Baby {
 
     @Id
@@ -16,7 +16,7 @@ public class Baby {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nmae", length = 120)
+    @Column(name = "name", length = 120)
     @NotEmpty(message = "{field.name.required}")
     private String name;
 
@@ -27,6 +27,10 @@ public class Baby {
     @Enumerated(EnumType.STRING)
     @Column(name = "sex")
     public BabySex sex;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Integer getId() {
         return id;
@@ -58,5 +62,13 @@ public class Baby {
 
     public void setSex(BabySex sex) {
         this.sex = sex;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

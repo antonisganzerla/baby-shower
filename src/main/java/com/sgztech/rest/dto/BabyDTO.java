@@ -1,38 +1,26 @@
-package com.sgztech.domain.entity;
+package com.sgztech.rest.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sgztech.domain.enums.BabySex;
 
-import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "baby")
-public class Baby {
+public class BabyDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name", length = 120)
     @NotEmpty(message = "{field.name.required}")
     private String name;
 
-    @Column(name = "expectedDateOfBirth")
     @FutureOrPresent(message = "{field.expected-date-of-birth.must-be-equal-or-greater-than-current-date}")
     private LocalDate expectedDateOfBirth;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sex")
     private BabySex sex;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
+    @NotNull(message = "{field.userId.required}")
+    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -66,11 +54,11 @@ public class Baby {
         this.sex = sex;
     }
 
-    public User getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

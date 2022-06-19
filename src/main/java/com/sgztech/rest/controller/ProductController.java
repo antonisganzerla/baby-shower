@@ -1,7 +1,7 @@
 package com.sgztech.rest.controller;
 
-import com.sgztech.rest.dto.BabyDTO;
-import com.sgztech.service.BabyService;
+import com.sgztech.rest.dto.ProductDTO;
+import com.sgztech.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,28 +10,28 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/baby")
-public class BabyController {
+@RequestMapping("/api/product")
+public class ProductController {
 
     @Autowired
-    private BabyService service;
+    private ProductService service;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BabyDTO save(@RequestBody @Valid BabyDTO baby) {
-        return service.save(baby);
+    public ProductDTO save(@RequestBody @Valid ProductDTO product) {
+        return service.save(product);
     }
 
     @GetMapping("{id}")
-    public BabyDTO getById(@PathVariable Integer id) {
+    public ProductDTO getById(@PathVariable Integer id) {
         return service.getById(id);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Integer id,
-                       @RequestBody @Valid BabyDTO baby) {
-        service.update(id, baby);
+                       @RequestBody @Valid ProductDTO product) {
+        service.update(id, product);
     }
 
     @DeleteMapping("{id}")
@@ -41,7 +41,7 @@ public class BabyController {
     }
 
     @GetMapping
-    public List<BabyDTO> find(BabyDTO babyFilter) {
-        return service.find(babyFilter);
+    public List<ProductDTO> find(ProductDTO filter) {
+        return service.find(filter);
     }
 }

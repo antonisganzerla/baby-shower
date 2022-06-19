@@ -1,33 +1,21 @@
-package com.sgztech.domain.entity;
+package com.sgztech.rest.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Entity
-@Table( name = "product" )
-public class Product {
+public class ProductDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "description", length = 120)
     @NotEmpty(message = "{field.description.required}")
     private String description;
 
-    @Column(name = "price", precision = 20, scale = 2)
     @NotNull(message = "{field.price.required}")
     private BigDecimal price;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private User user;
+    @NotNull(message = "{field.userId.required}")
+    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -53,11 +41,11 @@ public class Product {
         this.price = price;
     }
 
-    public User getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

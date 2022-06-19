@@ -1,5 +1,6 @@
 package com.sgztech.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sgztech.domain.enums.EventStatus;
 
 import javax.persistence.*;
@@ -35,12 +36,13 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "event")
     private List<ProductEvent> products;
 
-    @OneToMany(mappedBy = "baby")
+    @OneToMany(mappedBy = "event")
     private List<BabyEvent> babies;
 
     public Integer getId() {

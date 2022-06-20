@@ -1,17 +1,16 @@
 package com.sgztech.service;
 
 import com.sgztech.domain.entity.*;
+import com.sgztech.domain.enums.EventPresence;
 import com.sgztech.domain.enums.EventStatus;
 import com.sgztech.domain.repository.*;
 import com.sgztech.exception.EntityNotFoundException;
-import com.sgztech.rest.dto.BabyEventDTO;
-import com.sgztech.rest.dto.EventDTO;
-import com.sgztech.rest.dto.EventInfoDTO;
-import com.sgztech.rest.dto.ProductEventDTO;
+import com.sgztech.rest.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +34,12 @@ public class EventServiceImpl {
 
     @Autowired
     private BabyEventRepository babyEventRepository;
+
+    @Autowired
+    private GuestEventRepository guestEventRepository;
+
+    @Autowired
+    private MessageEventRepository messageEventRepository;
 
     @Transactional
     public Event save(EventDTO eventDTO) {
@@ -102,5 +107,32 @@ public class EventServiceImpl {
         dto.setBabies(event.getBabies());
         dto.setProducts(event.getProducts());
         return dto;
+    }
+
+    public void saveGuest(Integer eventId, GuestDTO dto) {
+        Event event = repository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado"));
+
+        GuestEvent guestEvent = new GuestEvent();
+        guestEvent.setName(dto.getName());
+        guestEvent.setEmail(dto.getEmail());
+        guestEvent.setDate(LocalDateTime.now());
+        guestEvent.setPresence(EventPresence.WAITING);
+        guestEvent.setEvent(event);
+
+        guestEventRepository.save(guestEvent);
+    }
+
+    public void saveMessage(Integer eventId, MessageDTO dto) {
+        Event event = repository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado"));
+
+        MessageEvent messageEvent = new MessageEvent();
+        messageEvent.setMessage(dto.getMessage());
+        messageEvent.setSender(dto.getSender());
+        messageEvent.setDate(LocalDateTime.now());
+        messageEvent.setEvent(event);
+
+        messageEventRepository.save(messageEvent);
     }
 }

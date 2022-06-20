@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sgztech.domain.enums.EventPresence;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
@@ -24,6 +25,10 @@ public class GuestEvent {
     @Column(name = "name", length = 200)
     @NotEmpty(message = "{field.name.required}")
     private String name;
+
+    @Column(name = "email", length = 200)
+    @Email(message = "{field.email.must-be-valid}")
+    private String email;
 
     @Column(name = "date", length = 200)
     private LocalDateTime date;
@@ -54,6 +59,14 @@ public class GuestEvent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getDate() {

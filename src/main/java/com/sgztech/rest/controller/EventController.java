@@ -2,6 +2,8 @@ package com.sgztech.rest.controller;
 
 import com.sgztech.rest.dto.EventDTO;
 import com.sgztech.rest.dto.EventInfoDTO;
+import com.sgztech.rest.dto.GuestDTO;
+import com.sgztech.rest.dto.MessageDTO;
 import com.sgztech.service.EventServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,5 +27,17 @@ public class EventController {
     @GetMapping("{id}")
     public EventInfoDTO getById(@PathVariable Integer id) {
         return service.getById(id);
+    }
+
+    @PostMapping("{id}/guest")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveGuest(@PathVariable Integer id, @RequestBody @Valid GuestDTO guestDTO) {
+        service.saveGuest(id, guestDTO);
+    }
+
+    @PostMapping("{id}/message")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveMessage(@PathVariable Integer id, @RequestBody @Valid MessageDTO messageEventDTO) {
+        service.saveMessage(id, messageEventDTO);
     }
 }

@@ -4,6 +4,7 @@ import com.sgztech.domain.entity.*;
 import com.sgztech.domain.enums.EventPresence;
 import com.sgztech.domain.enums.EventStatus;
 import com.sgztech.domain.repository.*;
+import com.sgztech.exception.BusinessRuleException;
 import com.sgztech.exception.EntityNotFoundException;
 import com.sgztech.rest.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,23 @@ public class EventServiceImpl {
         return event;
     }
 
+    public void cancel(Integer id) {
+        Event event = getEvent(id);
+        if (event.getStatus() == EventStatus.CLOSED)
+            throw new BusinessRuleException("Evento encerrado não pode ser cancelado");
+        event.setStatus(EventStatus.CANCELED);
+        repository.save(event);
+    }
+
+    public void close(Integer id) {
+        Event event = getEvent(id);
+        if (event.getStatus() == EventStatus.CANCELED)
+            throw new BusinessRuleException("Evento cancelado não pode ser encerrado");
+
+        event.setStatus(EventStatus.CLOSED);
+        repository.save(event);
+    }
+
     private List<ProductEvent> mapToProductEventList(List<ProductEventDTO> items, Event event) {
         return items.stream()
                 .map(p -> {
@@ -94,8 +112,7 @@ public class EventServiceImpl {
     }
 
     public EventInfoDTO getById(Integer id) {
-        Event event = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado"));
+        Event event = getEvent(id);
 
         EventInfoDTO dto = new EventInfoDTO();
         dto.setId(event.getId());
@@ -110,8 +127,7 @@ public class EventServiceImpl {
     }
 
     public void saveGuest(Integer eventId, GuestDTO dto) {
-        Event event = repository.findById(eventId)
-                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado"));
+        Event event = getEvent(eventId);
 
         GuestEvent guestEvent = new GuestEvent();
         guestEvent.setName(dto.getName());
@@ -124,8 +140,7 @@ public class EventServiceImpl {
     }
 
     public void saveMessage(Integer eventId, MessageDTO dto) {
-        Event event = repository.findById(eventId)
-                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado"));
+        Event event = getEvent(eventId);
 
         MessageEvent messageEvent = new MessageEvent();
         messageEvent.setMessage(dto.getMessage());
@@ -134,5 +149,10 @@ public class EventServiceImpl {
         messageEvent.setEvent(event);
 
         messageEventRepository.save(messageEvent);
+    }
+
+    private Event getEvent(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Evento não encontrado"));
     }
 }

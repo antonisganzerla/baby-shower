@@ -40,4 +40,16 @@ public class EventController {
     public void saveMessage(@PathVariable Integer id, @RequestBody @Valid MessageDTO messageEventDTO) {
         service.saveMessage(id, messageEventDTO);
     }
+
+    @PatchMapping("{id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancel(@PathVariable Integer id) {
+        service.cancel(id);
+    }
+
+    @PatchMapping("{id}/close")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void close(@PathVariable Integer id) {
+        service.close(id);
+    }
 }

@@ -1,9 +1,11 @@
 package com.sgztech.service;
 
-import com.sgztech.domain.entity.Product;
 import com.sgztech.domain.entity.User;
 import com.sgztech.domain.repository.UserRepository;
+import com.sgztech.exception.AuthException;
 import com.sgztech.exception.EntityNotFoundException;
+import com.sgztech.rest.dto.CredentialsDTO;
+import com.sgztech.security.HashUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -19,6 +21,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        String encryptedPassword = HashUtils.getHashMd5(user.getPassword());
+        user.setPassword(encryptedPassword);
         return repository.save(user);
     }
 
@@ -56,5 +60,20 @@ public class UserServiceImpl implements UserService {
 
         Example<User> example = Example.of(filter, matcher);
         return repository.findAll(example);
+    }
+
+    @Override
+    public void auth(CredentialsDTO dto) {
+        User user = repository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new AuthException("Usuário inválido"));
+
+        if (!isPasswordMatch(dto, user)) {
+            throw new AuthException("Senha inválida");
+        }
+    }
+
+    private boolean isPasswordMatch(CredentialsDTO dto, User user) {
+        String encryptedPassword = HashUtils.getHashMd5(dto.getPassword());
+        return user.getPassword().equals(encryptedPassword);
     }
 }

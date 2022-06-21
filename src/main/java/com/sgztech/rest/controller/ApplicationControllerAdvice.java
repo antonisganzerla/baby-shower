@@ -1,5 +1,6 @@
 package com.sgztech.rest.controller;
 
+import com.sgztech.exception.BusinessRuleException;
 import com.sgztech.exception.EntityNotFoundException;
 import com.sgztech.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,12 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiErrors handleEntityNotFoundException(EntityNotFoundException ex) {
+        return new ApiErrors(ex.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleBusinessRuleException(BusinessRuleException ex) {
         return new ApiErrors(ex.getMessage());
     }
 

@@ -87,6 +87,11 @@ public class EventServiceImpl {
     private List<ProductEvent> mapToProductEventList(List<ProductEventDTO> items, Event event) {
         return items.stream()
                 .map(p -> {
+                    if (p.getQuantity() == null)
+                        throw new BusinessRuleException("Quantidade é obrigatório");
+                    if (p.getQuantity() <= 0)
+                        throw new BusinessRuleException("Quantidade deve ser maior que zero");
+
                     Product product = productRepository
                             .findById(p.getProductId())
                             .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));

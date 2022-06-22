@@ -123,6 +123,8 @@ public class EventServiceImpl {
         dto.setUserId(event.getUser().getId());
         dto.setBabies(event.getBabies());
         dto.setProducts(event.getProducts());
+        dto.setGuests(event.getGuests());
+        dto.setMessages(event.getMessages());
         return dto;
     }
 

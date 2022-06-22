@@ -45,6 +45,12 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<BabyEvent> babies;
 
+    @OneToMany(mappedBy = "event")
+    private List<GuestEvent> guests;
+
+    @OneToMany(mappedBy = "event")
+    private List<MessageEvent> messages;
+
     public Integer getId() {
         return Id;
     }
@@ -107,5 +113,21 @@ public class Event {
 
     public void setBabies(List<BabyEvent> babies) {
         this.babies = babies;
+    }
+
+    public List<GuestEvent> getGuests() {
+        return guests;
+    }
+
+    public void setGuests(List<GuestEvent> guests) {
+        this.guests = guests;
+    }
+
+    public List<MessageEvent> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageEvent> messages) {
+        this.messages = messages;
     }
 }

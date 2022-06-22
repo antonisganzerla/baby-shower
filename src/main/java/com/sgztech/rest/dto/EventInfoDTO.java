@@ -1,6 +1,8 @@
 package com.sgztech.rest.dto;
 
 import com.sgztech.domain.entity.BabyEvent;
+import com.sgztech.domain.entity.GuestEvent;
+import com.sgztech.domain.entity.MessageEvent;
 import com.sgztech.domain.entity.ProductEvent;
 import com.sgztech.domain.enums.EventStatus;
 
@@ -17,6 +19,8 @@ public class EventInfoDTO {
     private Integer userId;
     private List<BabyEvent> babies;
     private List<ProductEvent> products;
+    private List<GuestEvent> guests;
+    private List<MessageEvent> messages;
 
     public Integer getId() {
         return Id;
@@ -80,5 +84,21 @@ public class EventInfoDTO {
 
     public void setProducts(List<ProductEvent> products) {
         this.products = products;
+    }
+
+    public List<GuestEvent> getGuests() {
+        return guests;
+    }
+
+    public void setGuests(List<GuestEvent> guests) {
+        this.guests = guests;
+    }
+
+    public List<MessageEvent> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageEvent> messages) {
+        this.messages = messages;
     }
 }
